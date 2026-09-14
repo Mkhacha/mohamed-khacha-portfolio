@@ -142,7 +142,7 @@ export default function Timeline() {
                         {item.period}
                       </span>
                       <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md bg-surface border border-text-tertiary/20 text-text-tertiary">
-                        📍 {item.location}
+                        {item.location}
                       </span>
                     </div>
 
