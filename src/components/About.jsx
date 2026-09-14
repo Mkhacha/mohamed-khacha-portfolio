@@ -15,7 +15,7 @@ export const About = () => {
         {/* Top row: Section Label */}
         <div className="reveal flex mb-16 md:mb-24">
           <span className="inline-flex items-center gap-2 text-caption tracking-widest text-text-tertiary uppercase">
-            <span className="w-8 h-[1px] bg-accent inline-block" />
+            <span className="w-8 h-[1px] bg-accent inline-block animate-hairline" />
             The Philosophy
           </span>
         </div>

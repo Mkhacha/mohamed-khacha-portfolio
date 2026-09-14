@@ -307,8 +307,36 @@
     }
   }
 
-  .animate-line-expand {
-    animation: expand-line 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  /* Hairline glow sweep on section ticks */
+  @keyframes hairline-breathe {
+    0%, 100% {
+      opacity: 0.65;
+      transform: scaleX(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scaleX(1.18);
+      box-shadow: 0 0 10px rgb(var(--color-accent) / 0.8);
+    }
+  }
+
+  .animate-hairline {
+    transform-origin: left center;
+    animation: hairline-breathe 4s ease-in-out infinite;
+  }
+
+  /* Micro floating breathing for tags & buttons */
+  @keyframes micro-float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-2px);
+    }
+  }
+
+  .animate-micro-float {
+    animation: micro-float 3.5s ease-in-out infinite;
   }
 }
 

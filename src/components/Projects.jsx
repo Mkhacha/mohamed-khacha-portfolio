@@ -231,101 +231,53 @@ function LockIcon() {
 }
 
 function ProjectCard({ project, onClick, index }) {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0, opacity: 0 });
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-      opacity: 1,
-    });
-  };
-
-  const handleMouseLeave = () => {
-    setMousePos((prev) => ({ ...prev, opacity: 0 }));
-  };
-
   return (
     <div
       onClick={onClick}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ animationDelay: `${index * 80}ms` }}
-      className="project-card-animate bg-surface-elevated/70 border border-text-tertiary/15 hover:border-accent/40 rounded-2xl sm:rounded-3xl p-6 sm:p-7 transition-all duration-300 backdrop-blur-sm flex flex-col justify-between space-y-6 group cursor-pointer hover:shadow-2xl hover:shadow-accent/10 hover:-translate-y-1.5 relative overflow-hidden"
+      style={{ animationDelay: `${index * 60}ms` }}
+      className="group project-card-animate py-6 sm:py-8 px-2 sm:px-4 border-b border-text-tertiary/15 hover:border-accent/40 transition-all duration-300 flex flex-col justify-between space-y-4 cursor-pointer relative"
     >
-      {/* Dynamic Cursor-Tracking Ambient Spotlight */}
-      <div
-        className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-0"
-        style={{
-          opacity: mousePos.opacity,
-          background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgb(var(--color-accent) / 0.12), transparent 65%)`,
-        }}
-      />
-
-      {/* Top Ambient Highlight Beam on Hover */}
-      <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-accent/0 to-transparent group-hover:via-accent/60 transition-all duration-500 z-10" />
-
-      <div className="relative z-10">
-        <div className="flex justify-between items-start gap-4">
+      <div>
+        <div className="flex justify-between items-start gap-4 mb-3">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-surface border border-text-tertiary/20 text-accent font-medium group-hover:border-accent/30 transition-colors">
+            <span className="text-xs font-mono text-accent">
               {project.category}
             </span>
             {project.isPrivate && (
-              <span className="text-[9px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-surface border border-text-tertiary/20 text-text-tertiary inline-flex items-center gap-1 font-medium group-hover:text-amber-400 group-hover:border-amber-400/30 transition-colors">
+              <span className="text-[10px] font-mono text-text-tertiary inline-flex items-center gap-1">
                 <LockIcon />
                 Private
               </span>
             )}
           </div>
           
-          <div className="w-8 h-8 rounded-full bg-surface border border-text-tertiary/20 flex items-center justify-center text-text-tertiary group-hover:text-accent group-hover:border-accent/40 group-hover:bg-accent/10 group-hover:scale-110 transition-all duration-300 shadow-sm">
-            {project.isPrivate ? (
-              <span className="group-hover:scale-110 transition-transform duration-200">
-                <LockIcon />
-              </span>
-            ) : (
-              <span className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200">
-                <ArrowUpRight />
-              </span>
-            )}
-          </div>
+          <span className="text-xs font-mono text-text-tertiary group-hover:text-accent group-hover:translate-x-1 transition-all duration-200 inline-flex items-center gap-1">
+            <span>Explore</span>
+            <ArrowUpRight />
+          </span>
         </div>
 
-        <h3 className="text-xl font-semibold text-text-primary mt-4 group-hover:text-accent transition-colors duration-200">
+        <h3 className="text-xl sm:text-2xl font-semibold text-text-primary group-hover:text-accent transition-colors duration-200">
           {project.name}
         </h3>
-        <p className="text-xs text-text-secondary font-medium mt-0.5">
+        <p className="text-sm text-text-secondary font-medium mt-0.5">
           {project.tagline}
         </p>
 
-        <p className="text-xs text-text-tertiary leading-relaxed mt-3">
+        <p className="text-xs sm:text-sm text-text-tertiary leading-relaxed mt-3 max-w-xl">
           {project.shortDesc}
         </p>
       </div>
 
-      <div className="relative z-10 flex items-center justify-between pt-4 border-t border-text-tertiary/10">
-        <div className="flex flex-wrap gap-1.5">
-          {project.tags.slice(0, 3).map((tag) => (
-            <span
-              key={tag}
-              className="text-[10px] px-2 py-0.5 rounded-md bg-surface text-text-secondary border border-text-tertiary/15 group-hover:border-text-tertiary/30 transition-colors"
-            >
-              {tag}
-            </span>
-          ))}
-          {project.tags.length > 3 && (
-            <span className="text-[10px] px-1.5 py-0.5 text-text-tertiary font-mono">
-              +{project.tags.length - 3}
-            </span>
-          )}
-        </div>
-
-        <span className="text-[11px] text-accent font-medium inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform duration-200">
-          <span>Details</span>
-          <span>→</span>
-        </span>
+      <div className="flex flex-wrap gap-1.5 pt-2">
+        {project.tags.map((tag) => (
+          <span
+            key={tag}
+            className="text-[11px] px-2.5 py-0.5 rounded-full bg-surface-subtle/70 text-text-secondary font-mono"
+          >
+            {tag}
+          </span>
+        ))}
       </div>
     </div>
   );
@@ -358,61 +310,83 @@ export default function Projects() {
   }, [activeProject]);
 
   return (
-    <section id="projects" className="w-full py-20 md:py-28 px-6 md:px-12 lg:px-16 bg-surface text-text-primary" ref={sectionRef}>
-      <div className="max-w-6xl mx-auto">
+    <section id="projects" className="w-full py-20 md:py-32 px-6 md:px-12 lg:px-16 bg-surface text-text-primary relative overflow-hidden" ref={sectionRef}>
+      {/* Ambient background light wash */}
+      <div className="absolute top-1/3 right-1/4 w-[600px] h-[350px] bg-accent/5 rounded-full blur-3xl pointer-events-none -z-10" />
+
+      <div className="max-w-7xl mx-auto">
         
-        {/* Section Header with 4-Box Pagination Switcher */}
-        <div className="reveal flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-text-tertiary/15 mb-12">
-          <div>
-            <span className="inline-flex items-center gap-2 text-caption tracking-widest text-text-tertiary uppercase">
-              <span className="w-6 h-[1px] bg-accent inline-block" />
-              02 / Engineering Works
+        {/* Section Header matching About & Feature */}
+        <div className="reveal flex items-center justify-between border-b border-text-tertiary/15 pb-6 mb-12">
+          <span className="inline-flex items-center gap-3 text-caption tracking-widest text-text-tertiary uppercase font-mono">
+            <span className="w-8 h-[1px] bg-accent inline-block animate-hairline" />
+            02 / Engineering Works
+          </span>
+          <span className="text-caption text-text-tertiary tracking-widest uppercase hidden sm:inline-block font-mono text-xs">
+            12 Systems · Computer Vision, NLP & Industrial ML
+          </span>
+        </div>
+
+        {/* Cinematic Headline & Thesis */}
+        <div className="max-w-4xl mb-12">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-semibold text-text-primary tracking-tight leading-[1.08] reveal reveal-delay-1">
+            Engineering Works.
+            <span 
+              className="block text-gradient-accent mt-3 text-2xl sm:text-4xl md:text-5xl"
+              style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 400 }}
+            >
+              Systems forged at the intersection of scale and precision.
             </span>
-            <h2 className="text-2xl sm:text-3xl font-semibold text-text-primary tracking-tight mt-1">
-              Selected Projects
-            </h2>
+          </h2>
+          <p className="mt-6 text-lg sm:text-xl text-text-secondary leading-relaxed font-light max-w-3xl reveal reveal-delay-2">
+            Selected architectures spanning adversarial computer vision, dialectal NLP, industrial predictive modeling, and applied AI research.
+          </p>
+        </div>
+
+        {/* Minimalist Line Switcher matching Feature tabs */}
+        <div className="reveal reveal-delay-2 flex flex-wrap items-center justify-between gap-4 border-b border-text-tertiary/10 pb-3 mb-8">
+          <div className="flex flex-wrap items-center gap-6 sm:gap-10">
+            {['Top Flagships', 'Domain ML', 'Applied AI & Research'].map((setName, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentPage(idx)}
+                className={`text-xs sm:text-sm font-mono tracking-wider transition-all duration-300 cursor-pointer relative pb-3 ${
+                  currentPage === idx
+                    ? 'text-accent font-semibold'
+                    : 'text-text-tertiary hover:text-text-primary'
+                }`}
+              >
+                0{idx + 1} / {setName}
+                {currentPage === idx && (
+                  <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-accent shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
+                )}
+              </button>
+            ))}
           </div>
 
-          {/* Switcher between the 4-box sets */}
-          <div className="flex items-center gap-3 self-start sm:self-auto">
-            <div className="flex bg-surface-elevated p-1 rounded-full border border-text-tertiary/15 backdrop-blur-sm">
-              {['Top Flagships', 'Domain ML', 'Applied AI & Research'].map((setName, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentPage(idx)}
-                  className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-wider font-medium transition-all ${
-                    currentPage === idx
-                      ? 'bg-accent text-white shadow-md shadow-accent/25'
-                      : 'text-text-secondary hover:text-text-primary'
-                  }`}
-                >
-                  {setName}
-                </button>
-              ))}
-            </div>
-
-            {/* Arrow navigation */}
-            <div className="flex items-center gap-1">
-              <button
-                onClick={() => setCurrentPage((prev) => (prev > 0 ? prev - 1 : totalPages - 1))}
-                className="w-8 h-8 rounded-full border border-text-tertiary/20 flex items-center justify-center text-text-secondary hover:text-text-primary hover:border-accent transition-colors"
-                aria-label="Previous projects"
-              >
-                ←
-              </button>
-              <button
-                onClick={() => setCurrentPage((prev) => (prev < totalPages - 1 ? prev + 1 : 0))}
-                className="w-8 h-8 rounded-full border border-text-tertiary/20 flex items-center justify-center text-text-secondary hover:text-text-primary hover:border-accent transition-colors"
-                aria-label="Next projects"
-              >
-                →
-              </button>
-            </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setCurrentPage((prev) => (prev > 0 ? prev - 1 : totalPages - 1))}
+              className="w-7 h-7 rounded-full text-text-tertiary hover:text-accent hover:bg-accent/10 flex items-center justify-center text-xs transition-colors cursor-pointer"
+              aria-label="Previous projects"
+            >
+              ←
+            </button>
+            <span className="font-mono text-xs text-text-tertiary">
+              {currentPage + 1} / {totalPages}
+            </span>
+            <button
+              onClick={() => setCurrentPage((prev) => (prev < totalPages - 1 ? prev + 1 : 0))}
+              className="w-7 h-7 rounded-full text-text-tertiary hover:text-accent hover:bg-accent/10 flex items-center justify-center text-xs transition-colors cursor-pointer"
+              aria-label="Next projects"
+            >
+              →
+            </button>
           </div>
         </div>
 
-        {/* 4 Boxes Grid (2x2) with Staggered Cascading Animation */}
-        <div key={currentPage} className="grid grid-cols-1 md:grid-cols-2 gap-6 min-h-[440px]">
+        {/* 2-Column Open Editorial Grid with Staggered Cascading Animation */}
+        <div key={currentPage} className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 min-h-[400px]">
           {currentProjects.map((project, index) => (
             <ProjectCard
               key={`${currentPage}-${project.id}`}
@@ -533,7 +507,7 @@ export default function Projects() {
           </div>
         )}
 
-        <div className="section-divider mt-20 max-w-6xl mx-auto" />
+        <div className="section-divider mt-24 md:mt-32 max-w-7xl mx-auto" />
       </div>
     </section>
   );

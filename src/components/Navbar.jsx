@@ -17,6 +17,24 @@ function MoonIcon() {
   );
 }
 
+function HeaderBrand() {
+  return (
+    <button 
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      className="group flex items-center gap-2 text-left focus:outline-none cursor-pointer select-none active:scale-95 transition-all duration-200"
+      title="Scroll to top · M.KHACHA"
+      aria-label="Mohamed Khacha - Home"
+    >
+      <span className="font-mono text-accent text-sm md:text-base font-bold transition-transform duration-200 group-hover:translate-x-0.5 select-none">
+        ❯
+      </span>
+      <span className="font-mono font-bold tracking-widest text-sm md:text-base text-text-primary group-hover:text-accent transition-colors duration-200">
+        M.KHACHA
+      </span>
+    </button>
+  );
+}
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('');
@@ -58,22 +76,22 @@ export default function Navbar() {
         document.documentElement.classList.remove('dark');
       }
     } else {
-      const isDark = document.documentElement.classList.contains('dark');
-      setTheme(isDark ? 'dark' : 'light');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setTheme(prefersDark ? 'dark' : 'light');
     }
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const toggleTheme = () => {
-    const nextTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(nextTheme);
-    if (nextTheme === 'dark') {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    if (newTheme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
-    localStorage.setItem('theme', nextTheme);
   };
 
   const navLinks = [
@@ -100,14 +118,9 @@ export default function Navbar() {
           : 'bg-transparent py-6 md:py-8'
       }`}
     >
-        <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-16 flex justify-between items-center">
-          {/* Logo / Name */}
-          <button 
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="text-text-primary font-medium tracking-widest text-sm hover:text-accent active:scale-95 transition-all duration-200 focus:outline-none cursor-pointer"
-          >
-            M.KHACHA
-          </button>
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 flex justify-between items-center">
+          {/* Logo / Prompt Brand */}
+          <HeaderBrand />
 
           <div className="flex items-center gap-4 md:gap-6">
             {/* Desktop Nav with Active Scroll Spy */}
